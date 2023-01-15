@@ -1,2 +1,2 @@
-# MinecraftRCONConnect
-我的世界RCON连接客户端
+# MinecraftRCONClient
+我的世界RCON客户端
