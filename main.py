@@ -1,4 +1,5 @@
 import os, sys, time
+import platform
 import threading
 from mcrcon import MCRcon
 import tkinter as tk
@@ -37,7 +38,27 @@ $disconnect - 断开连接
             listbox.insert(ttk.END,'已断开链接', 'blue')
             root.destroy()
             main()
+    
+    def readconfig():
+        if platform.system() == 'Windows':
+            try:
+                config_file = open("C:/ProgramData/RCON_config.txt",'r+')
+                config = config_file.read().split('&&')
+                return config
+            except BaseException as error:
+                config_file = open("C:/ProgramData/RCON_config.txt",'w+')
+                config_file.write("127.0.0.1&&25575&&password")
+                config_file = open("C:/ProgramData/RCON_config.txt",'r+')
+                config = config_file.read().split('&&')
+                return config
+        return False
 
+    def saveconfig(self,path,string):
+        if platform.system() == 'Windows':
+            config_file = open(str(path),'w+')
+            config_file.write(str(string))
+            return True
+        return False
 
 def login(*args):
     loginRoot.destroy()                  # 关闭窗口
@@ -46,8 +67,7 @@ def login(*args):
     curPort = Port.get()
     curPassword = Password.get()
     mcr = MCRcon(curIP, curPassword, port=int(curPort))
-    config_file = open("C:/ProgramData/RCON_config.txt",'w+')
-    config_file.write(curIP+'&&'+curPort+'&&'+curPassword)
+    app.saveconfig("C:/ProgramData/RCON_config.txt", str(curIP+'&&'+curPort+'&&'+curPassword))
 
 
 class window():
@@ -64,25 +84,21 @@ class window():
         but1 = ttk.Button(loginRoot, text='登录', command=login)
         but1.place(x=10, y=150, width=70, height=30)
 
-        try:
-            config_file = open("C:/ProgramData/RCON_config.txt",'r+')
-            config = config_file.read().split('&&')
-            print(config)
-        except BaseException as error:
-            config_file = open("C:/ProgramData/RCON_config.txt",'w+')
-            config_file.write("127.0.0.1&&25575&&password")
-            config_file = open("C:/ProgramData/RCON_config.txt",'r+')
-            config = config_file.read().split('&&')
-            print(config)
+        
+        config = app.readconfig()
 
         IP = ttk.StringVar()
-        IP.set(config[0])  # 默认显示的ip
-
         Port = ttk.StringVar()
-        Port.set(config[1])
-
         Password = ttk.StringVar()
-        Password.set(config[2])
+        
+        if not config==False:
+            IP.set(config[0])  # 默认显示
+            Port.set(config[1])
+            Password.set(config[2])
+        else:
+            IP.set('127.0.0.1')  # 默认显示
+            Port.set('25575')
+            Password.set('P^$$vvOrd')
 
         # 服务器标签
         labelIP = ttk.Label(loginRoot, text='服务器地址')
