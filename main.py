@@ -4,6 +4,7 @@ import threading
 from mcrcon import MCRcon
 import tkinter as tk
 import ttkbootstrap as ttk
+import customtkinter as ctk
 import tkinter.messagebox as tkm
 from ttkbootstrap.constants import *
 from tkinter.scrolledtext import ScrolledText  # 导入多行文本框用到的包
@@ -22,7 +23,7 @@ class app():
         command = command[1:len(str(entry.get()))]
         app.local_log(command)
         if command == 'help':
-            listbox.insert(ttk.END,
+            listbox.insert(ctk.CTkEND,
 '''命令帮助
 $help - 帮助
 $exit - 退出
@@ -35,7 +36,7 @@ $disconnect - 断开连接
             sys.exit(0)
         if command == 'disconnect':
             mcr.disconnect()
-            listbox.insert(ttk.END,'已断开链接', 'blue')
+            listbox.insert(ctk.CTkEND,'已断开链接', 'blue')
             root.destroy()
             main()
     
@@ -75,13 +76,13 @@ class window():
         global loginRoot
         global IP, Port, Password
 
-        loginRoot = ttk.Window()
+        loginRoot = ctk.CTk()
         loginRoot.title('我的世界RCON链接')
         loginRoot.geometry('400x300')
         loginRoot.resizable(0, 0)  # 限制窗口大小
         loginRoot.bind('<Return>', login)            # 回车绑定登录功能
 
-        but1 = ttk.Button(loginRoot, text='登录', command=login)
+        but1 = ctk.CTkButton(loginRoot, text='登录', command=login)
         but1.place(x=10, y=150, width=70, height=30)
 
         
@@ -101,24 +102,24 @@ class window():
             Password.set('P^$$vvOrd')
 
         # 服务器标签
-        labelIP = ttk.Label(loginRoot, text='服务器地址')
+        labelIP = ctk.CTkLabel(loginRoot, text='服务器地址')
         labelIP.place(x=15, y=10, width=200, height=40)
 
-        entryIP = ttk.Entry(loginRoot, width=80, textvariable=IP)
+        entryIP = ctk.CTkEntry(loginRoot, width=80, textvariable=IP)
         entryIP.place(x=120, y=10, width=260, height=40)
 
         # 端口标签
-        labelPort = ttk.Label(loginRoot, text='服务器RCON端口')
+        labelPort = ctk.CTkLabel(loginRoot, text='服务器RCON端口')
         labelPort.place(x=15, y=50, width=160, height=40)
 
-        entryPort = ttk.Entry(loginRoot, width=80, textvariable=Port)
+        entryPort = ctk.CTkEntry(loginRoot, width=80, textvariable=Port)
         entryPort.place(x=120, y=50, width=260, height=40)
 
     # 密码标签
-        labelPassword = ttk.Label(loginRoot, text='密码')
+        labelPassword = ctk.CTkLabel(loginRoot, text='密码')
         labelPassword.place(x=15, y=90, width=160, height=40)
 
-        entryPassword = ttk.Entry(
+        entryPassword = ctk.CTkEntry(
             loginRoot, show='*', width=80, textvariable=Password)
         entryPassword.place(x=120, y=90, width=260, height=40)
         loginRoot.mainloop()
@@ -126,7 +127,7 @@ class window():
     def connect(self):
         global listbox, a, entry
         global root
-        root = ttk.Window()
+        root = ctk.CTk()
         root.title('RCON Client')  # 窗口命名
         root['height'] = 400
         root['width'] = 580
@@ -146,9 +147,9 @@ class window():
         root.bind('<Return>', send)  # 绑定回车发送信息
 
         # 创建输入文本框和关联变量
-        a = ttk.StringVar()
+        a = ctk.CTkStringVar()
         a.set('连接成功！按enter发送指令')
-        entry = ttk.Entry(root, width=120, textvariable=a)
+        entry = ctk.CTkEntry(root, width=120, textvariable=a)
         entry.place(x=5, y=350, width=570, height=40)
 
         # 查看在线用户按钮
@@ -156,9 +157,9 @@ class window():
         button1.place(x=480, y=320, width=90, height=30)
 
         # 创建输入文本框和关联变量
-        a = ttk.StringVar()
+        a = ctk.CTkStringVar()
         a.set('')
-        entry = ttk.Entry(root, width=120, textvariable=a)
+        entry = ctk.CTkEntry(root, width=120, textvariable=a)
         entry.place(x=5, y=350, width=570, height=40)
 
         root.mainloop()
@@ -173,8 +174,8 @@ def send(*args):
         try:
             resp = mcr.command(str(entry.get()))
         except BaseException as error:
-            listbox.insert(ttk.END, str('发送失败！错误原因：' + error), 'black')
-        listbox.insert(ttk.END, str(resp), 'black')
+            listbox.insert(ctk.CTkEND, str('发送失败！错误原因：' + error), 'black')
+        listbox.insert(ctk.CTkEND, str(resp), 'black')
         a.set('')
 
 
