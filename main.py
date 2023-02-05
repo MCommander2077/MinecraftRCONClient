@@ -19,7 +19,7 @@ class app():
         if __name__ == "__main__":
             print(str(string))
 
-    def command_use(self, command):
+    def command_use(command):
         command = command[1:len(str(entry.get()))]
         app.local_log(command)
         if command == 'help':
@@ -129,8 +129,7 @@ class window():
         global root
         root = ctk.CTk()
         root.title('RCON Client')  # 窗口命名
-        root['height'] = 400
-        root['width'] = 580
+        root.geometry('580x400')
         root.resizable(0, 0)  # 限制窗口大小
 
         # 创建多行文本框
@@ -142,22 +141,22 @@ class window():
         listbox.tag_config('green', foreground='green')
         listbox.tag_config('pink', foreground='pink')
         # 创建发送按钮
-        button = tk.Button(root, text='发送', command=send)
+        button = ctk.CTkButton(root, text='发送', command=send)
         button.place(x=515, y=353, width=60, height=30)
         root.bind('<Return>', send)  # 绑定回车发送信息
 
         # 创建输入文本框和关联变量
-        a = ctk.CTkStringVar()
+        a = tk.StringVar()
         a.set('连接成功！按enter发送指令')
         entry = ctk.CTkEntry(root, width=120, textvariable=a)
         entry.place(x=5, y=350, width=570, height=40)
 
         # 查看在线用户按钮
-        button1 = tk.Button(root, text='Github', command=github)
+        button1 = ctk.CTkButton(root, text='Github', command=github)
         button1.place(x=480, y=320, width=90, height=30)
 
         # 创建输入文本框和关联变量
-        a = ctk.CTkStringVar()
+        a = tk.StringVar()
         a.set('')
         entry = ctk.CTkEntry(root, width=120, textvariable=a)
         entry.place(x=5, y=350, width=570, height=40)
@@ -174,8 +173,8 @@ def send(*args):
         try:
             resp = mcr.command(str(entry.get()))
         except BaseException as error:
-            listbox.insert(ctk.CTkEND, str('发送失败！错误原因：' + error), 'black')
-        listbox.insert(ctk.CTkEND, str(resp), 'black')
+            listbox.insert(tk.END, str('发送失败！错误原因：' + error), 'black')
+        listbox.insert(tk.END, str(resp), 'black')
         a.set('')
 
 
@@ -195,6 +194,7 @@ def main():
         firstrun = False
         app = app()
         window = window()
+        firstrun = True
     else:
         pass
     window.login('')
@@ -208,4 +208,5 @@ def main():
 
 if __name__ == '__main__':
     firstrun = False
-    main()
+    while True:
+        main()
