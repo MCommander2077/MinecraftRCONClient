@@ -72,7 +72,7 @@ def login(*args):
     curPassword = Password.get()
     mcr = MCRcon(curIP, curPassword, port=int(curPort))
     app.saveconfig("C:/ProgramData/RCON_config.txt",
-                   str(curIP+'&&'+curPort+'&&'+curPassword))
+                    str(curIP+'&&'+curPort+'&&'+curPassword))
 
 
 class window():
