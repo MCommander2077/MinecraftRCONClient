@@ -1,16 +1,17 @@
 import os
-import sys
-import time
 import platform
+import sys
 import threading
-from mcrcon import MCRcon
+import time
 import tkinter as tk
-import ttkbootstrap as ttk
-import customtkinter as ctk
 import tkinter.messagebox as tkm
-from ttkbootstrap.constants import *
 from tkinter.scrolledtext import ScrolledText  # 导入多行文本框用到的包
+
+import customtkinter as ctk
 import pyperclip as pc
+import ttkbootstrap as ttk
+from mcrcon import MCRcon
+from ttkbootstrap.constants import *
 
 
 class app():
@@ -26,7 +27,7 @@ class app():
         app.local_log(command)
         if command == 'help':
             listbox.insert(ctk.CTkEND,
-                           '''命令帮助
+                            '''命令帮助
 $help - 帮助
 $exit - 退出
 $disconnect - 断开连接
