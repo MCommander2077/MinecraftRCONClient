@@ -22,11 +22,11 @@ class app():
         if __name__ == "__main__":
             print(str(string))
 
-    def command_use(command):
+    def command_use(self,command):
         command = command[1:len(str(entry.get()))]
         app.local_log(command)
         if command == 'help':
-            listbox.insert(tk.tkEND,
+            listbox.insert(tk.END,
                             '''命令帮助
 $help - 帮助
 $exit - 退出
@@ -39,11 +39,11 @@ $disconnect - 断开连接
             sys.exit(0)
         if command == 'disconnect':
             mcr.disconnect()
-            listbox.insert(ctk.CTkEND, '已断开链接', 'blue')
+            listbox.insert(tk.END, '已断开链接', 'blue')
             root.destroy()
             main()
 
-    def readconfig():
+    def readconfig(self):
         if platform.system() == 'Windows':
             try:
                 config_file = open("C:/ProgramData/RCON_config.txt", 'r+')
@@ -107,21 +107,21 @@ class window():
 
         # 服务器标签
         labelIP = ctk.CTkLabel(loginRoot, text='服务器地址')
-        labelIP.place(x=15, y=10, width=200, height=40)
+        labelIP.place(x=0, y=10, width=100, height=40)
 
         entryIP = ctk.CTkEntry(loginRoot, width=80, textvariable=IP)
         entryIP.place(x=120, y=10, width=260, height=40)
 
         # 端口标签
         labelPort = ctk.CTkLabel(loginRoot, text='服务器RCON端口')
-        labelPort.place(x=15, y=50, width=160, height=40)
+        labelPort.place(x=0, y=50, width=100, height=40)
 
         entryPort = ctk.CTkEntry(loginRoot, width=80, textvariable=Port)
         entryPort.place(x=120, y=50, width=260, height=40)
 
     # 密码标签
         labelPassword = ctk.CTkLabel(loginRoot, text='密码')
-        labelPassword.place(x=15, y=90, width=160, height=40)
+        labelPassword.place(x=0, y=90, width=100, height=40)
 
         entryPassword = ctk.CTkEntry(
             loginRoot, show='*', width=80, textvariable=Password)
@@ -155,15 +155,13 @@ class window():
         entry = ctk.CTkEntry(root, width=120, textvariable=a)
         entry.place(x=5, y=350, width=570, height=40)
 
-        # 查看在线用户按钮
+        # 按钮
         button1 = ctk.CTkButton(root, text='Github', command=github)
         button1.place(x=480, y=320, width=90, height=30)
 
-        # 创建输入文本框和关联变量
-        a = tk.StringVar()
-        a.set('')
-        entry = ctk.CTkEntry(root, width=120, textvariable=a)
-        entry.place(x=5, y=350, width=570, height=40)
+        # 按钮
+        button2 = ctk.CTkButton(root, text='常用指令', command=useful_commands)
+        button2.place(x=320, y=320, width=90, height=30)
 
         root.mainloop()
 
@@ -192,24 +190,17 @@ def useful_commands():
 
 
 def main():
-    global app, window, firstrun
-    if firstrun:
-        firstrun = False
-        app = app()
-        window = window()
-        firstrun = True
-    else:
-        pass
-    window.login('')
+    global app, window
+    app = app()
+    window = window()
+    window.login()
     try:
         mcr.connect()
     except BaseException as error:
         tkm.showerror('错误！', message=error)
         sys.exit(error)
-    window.connect('')
+    window.connect()
 
 
 if __name__ == '__main__':
-    firstrun = False
-    while True:
-        main()
+    main()
