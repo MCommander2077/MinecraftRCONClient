@@ -1,4 +1,6 @@
-import os, sys, time
+import os
+import sys
+import time
 import platform
 import threading
 from mcrcon import MCRcon
@@ -24,42 +26,43 @@ class app():
         app.local_log(command)
         if command == 'help':
             listbox.insert(ctk.CTkEND,
-'''命令帮助
+                           '''命令帮助
 $help - 帮助
 $exit - 退出
 $disconnect - 断开连接
 ''', 'blue')
-#$language English/Chinese - 切换语言为英文/中文
+# $language English/Chinese - 切换语言为英文/中文
             a.set('')
         if command == 'exit':
             mcr.disconnect()
             sys.exit(0)
         if command == 'disconnect':
             mcr.disconnect()
-            listbox.insert(ctk.CTkEND,'已断开链接', 'blue')
+            listbox.insert(ctk.CTkEND, '已断开链接', 'blue')
             root.destroy()
             main()
-    
+
     def readconfig():
         if platform.system() == 'Windows':
             try:
-                config_file = open("C:/ProgramData/RCON_config.txt",'r+')
+                config_file = open("C:/ProgramData/RCON_config.txt", 'r+')
                 config = config_file.read().split('&&')
                 return config
             except BaseException as error:
-                config_file = open("C:/ProgramData/RCON_config.txt",'w+')
+                config_file = open("C:/ProgramData/RCON_config.txt", 'w+')
                 config_file.write("127.0.0.1&&25575&&password")
-                config_file = open("C:/ProgramData/RCON_config.txt",'r+')
+                config_file = open("C:/ProgramData/RCON_config.txt", 'r+')
                 config = config_file.read().split('&&')
                 return config
         return False
 
-    def saveconfig(self,path,string):
+    def saveconfig(self, path, string):
         if platform.system() == 'Windows':
-            config_file = open(str(path),'w+')
+            config_file = open(str(path), 'w+')
             config_file.write(str(string))
             return True
         return False
+
 
 def login(*args):
     loginRoot.destroy()                  # 关闭窗口
@@ -68,7 +71,8 @@ def login(*args):
     curPort = Port.get()
     curPassword = Password.get()
     mcr = MCRcon(curIP, curPassword, port=int(curPort))
-    app.saveconfig("C:/ProgramData/RCON_config.txt", str(curIP+'&&'+curPort+'&&'+curPassword))
+    app.saveconfig("C:/ProgramData/RCON_config.txt",
+                   str(curIP+'&&'+curPort+'&&'+curPassword))
 
 
 class window():
@@ -85,14 +89,13 @@ class window():
         but1 = ctk.CTkButton(loginRoot, text='登录', command=login)
         but1.place(x=10, y=150, width=70, height=30)
 
-        
         config = app.readconfig()
 
         IP = ttk.StringVar()
         Port = ttk.StringVar()
         Password = ttk.StringVar()
-        
-        if not config==False:
+
+        if not config == False:
             IP.set(config[0])  # 默认显示
             Port.set(config[1])
             Password.set(config[2])
@@ -164,7 +167,6 @@ class window():
         root.mainloop()
 
 
-
 def send(*args):
     if entry.get()[0] == '$':
         command = entry.get()
@@ -189,7 +191,7 @@ def useful_commands():
 
 
 def main():
-    global app,window,firstrun
+    global app, window, firstrun
     if firstrun:
         firstrun = False
         app = app()
