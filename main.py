@@ -26,7 +26,7 @@ class app():
         command = command[1:len(str(entry.get()))]
         app.local_log(command)
         if command == 'help':
-            listbox.insert(ctk.CTkEND,
+            listbox.insert(tk.tkEND,
                             '''命令帮助
 $help - 帮助
 $exit - 退出
